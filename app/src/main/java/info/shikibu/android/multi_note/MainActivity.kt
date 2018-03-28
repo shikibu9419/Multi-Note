@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         fab.setOnClickListener {
 //            val intent = Intent(this, AddNoteActivity::class.java)
-//            startActivity(inten)
+//            startActivity(intent)
         }
     }
 

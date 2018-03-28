@@ -1,39 +1,45 @@
 package info.shikibu.android.multi_note
 
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListAdapter
 import android.widget.TextView
 import io.realm.OrderedRealmCollection
-import io.realm.RealmBaseAdapter
+import io.realm.RealmRecyclerViewAdapter
 
-class ListNoteAdapter(realmResults: OrderedRealmCollection<Note>)
-    : RealmBaseAdapter<Note>(realmResults), ListAdapter {
+internal class ListNoteAdapter(data: OrderedRealmCollection<Note>)
+    : RealmRecyclerViewAdapter<Note, ListNoteAdapter.ViewHolder>(data, true) {
 
-    private class ViewHolder(itemView: View) {
-        internal var listTitle: TextView = itemView.findViewById<View>(R.id.list_title) as TextView
-        internal var listDetail: TextView = itemView.findViewById<View>(R.id.list_detail) as TextView
+    init {
+        setHasStableIds(true)
     }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
-        var view: View? = convertView
-        val holder: ViewHolder
+    override fun getItemId(index: Int): Long {
+        return getItem(index)!!.id
+    }
 
-        if (view == null) {
-            view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_item_note, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val itemView = LayoutInflater.from(parent.context)
+                .inflate(R.layout.list_item_note, parent, false)
+        return ViewHolder(itemView)
+    }
 
-            holder = ViewHolder(view)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = getItem(position)
+        holder.data = item
+        holder.title.text = item?.title
+        holder.detail.text = item?.detail
+    }
 
-            view.tag = holder
-        } else {
-            holder = view.tag as ViewHolder
+    internal inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var title: TextView
+        var detail: TextView
+        var data: Note? = null
+
+        init {
+            title = view.findViewById(R.id.note_title)
+            detail = view.findViewById(R.id.note_detail)
         }
-
-        holder.listTitle.text = getItem(position)?.title
-        holder.listDetail.text = getItem(position)?.detail
-
-        return view
     }
 }

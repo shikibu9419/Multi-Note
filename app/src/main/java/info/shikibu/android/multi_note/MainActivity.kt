@@ -1,5 +1,6 @@
 package info.shikibu.android.multi_note
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -18,8 +19,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener {
-//            val intent = Intent(this, AddNoteActivity::class.java)
-//            startActivity(intent)
+            val intent = Intent(this, AddNoteActivity::class.java)
+            startActivity(intent)
         }
     }
 

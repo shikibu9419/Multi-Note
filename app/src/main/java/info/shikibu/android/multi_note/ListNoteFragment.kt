@@ -44,6 +44,10 @@ class ListNoteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mRealm = Realm.getDefaultInstance()
+    }
+
+    override fun onResume() {
+        super.onResume()
         setUpRecyclerView()
     }
 

@@ -9,13 +9,12 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import io.realm.Realm
-import io.realm.RealmResults
 
 class ListNoteFragment : Fragment() {
 
     private lateinit var mRealm: Realm
-    private lateinit var resultData: RealmResults<Note>
 
     private inner class TouchHelperCallback internal constructor() : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -27,7 +26,6 @@ class ListNoteFragment : Fragment() {
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            deleteItem(viewHolder.itemId)
         }
 
         override fun isLongPressDragEnabled(): Boolean {
@@ -58,25 +56,31 @@ class ListNoteFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         val recyclerView = view?.findViewById<View>(R.id.list_view_note) as RecyclerView
-
-        resultData = mRealm.where(Note::class.java).findAll()
+        val resultData = mRealm.where(Note::class.java).findAll()
+        val adapter = ListNoteAdapter(resultData)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = ListNoteAdapter(resultData)
+        recyclerView.adapter = adapter
         recyclerView.setHasFixedSize(true)
         recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
         val touchHelperCallback = TouchHelperCallback()
         val itemTouchHelper = ItemTouchHelper(touchHelperCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
+
+        adapter.setOnItemClickListener(object : ListNoteAdapter.OnItemClickListener {
+            override fun onClick(view: View, id: Long) {
+                Toast.makeText(activity, "Item ID: $id", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
-    private fun deleteItem(id: Long) {
-        synchronized(lock = Object()) {
-            val item = resultData.where().equalTo("id", id).findFirst()
-            mRealm.executeTransaction {
-                item?.deleteFromRealm()
-            }
-        }
-    }
+//    private fun deleteItem(id: Long) {
+//        synchronized(lock = Object()) {
+//            val item = resultData.where().equalTo("id", id).findFirst()
+//            mRealm.executeTransaction {
+//                item?.deleteFromRealm()
+//            }
+//        }
+//    }
 }

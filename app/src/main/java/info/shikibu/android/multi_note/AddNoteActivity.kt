@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import io.realm.Realm
-import kotlinx.android.synthetic.main.input_form.*
+import kotlinx.android.synthetic.main.form_note.*
 
 class AddNoteActivity : AppCompatActivity() {
 

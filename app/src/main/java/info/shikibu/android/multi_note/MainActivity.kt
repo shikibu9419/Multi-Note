@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),
+        ListNoteFragment.ListNoteFragmentListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,10 +20,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        supportFragmentManager.beginTransaction()
+                .add(R.id.container_fragment, ListNoteFragment())
+                .commit()
+
         fab.setOnClickListener {
             val intent = Intent(this, AddNoteActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onListItemClickListener(id: Long) {
+        // TODO: Implement intent function to DetailActivity
+        Toast.makeText(this, "Item ID: $id", Toast.LENGTH_LONG).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

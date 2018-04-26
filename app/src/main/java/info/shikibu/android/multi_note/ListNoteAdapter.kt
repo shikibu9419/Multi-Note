@@ -12,7 +12,7 @@ import io.realm.RealmRecyclerViewAdapter
 internal class ListNoteAdapter(data: OrderedRealmCollection<Note>)
     : RealmRecyclerViewAdapter<Note, ListNoteAdapter.ViewHolder>(data, true) {
 
-    lateinit var listener: OnItemClickListener
+    private lateinit var mListener: OnItemClickListener
 
     init {
         setHasStableIds(true)
@@ -23,9 +23,9 @@ internal class ListNoteAdapter(data: OrderedRealmCollection<Note>)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        setOnItemClickListener(listener)
+        setOnItemClickListener(mListener)
         val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_note, parent, false)
+                .inflate(R.layout.item_list_note, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -35,7 +35,7 @@ internal class ListNoteAdapter(data: OrderedRealmCollection<Note>)
             holder.data = note
             holder.title.text = note.title
             holder.detail.text = note.detail
-            holder.itemRow.setOnClickListener { listener.onClick(it, note.id) }
+            holder.itemRow.setOnClickListener { mListener.onClick(it, note.id) }
         }
     }
 
@@ -44,7 +44,7 @@ internal class ListNoteAdapter(data: OrderedRealmCollection<Note>)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
-        this.listener = listener
+        this.mListener = listener
     }
 
     internal inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

@@ -5,34 +5,26 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import io.realm.Realm
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_detail.*
 
-class MainActivity : AppCompatActivity(),
-        ListNoteFragment.ListNoteFragmentListener {
+class DetailActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Realm.init(this)
-
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_detail)
         setSupportActionBar(toolbar)
 
-        supportFragmentManager.beginTransaction()
-                .add(R.id.container_fragment, ListNoteFragment())
+        val noteId = intent.getLongExtra(MainActivity.EXTRA_ID, -1)
+
+        fragmentManager.beginTransaction()
+                .add(R.id.container_fragment, DetailFragment().createInstance(noteId))
                 .commit()
 
         fab.setOnClickListener {
             val intent = Intent(this, AddNoteActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    override fun onListItemClickListener(id: Long) {
-        val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra(EXTRA_ID, id)
-        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -49,9 +41,5 @@ class MainActivity : AppCompatActivity(),
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    companion object {
-        const val EXTRA_ID = "info.shikibu.android.multi_note"
     }
 }

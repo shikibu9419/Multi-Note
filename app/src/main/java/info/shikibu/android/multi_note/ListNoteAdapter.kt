@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import io.realm.OrderedRealmCollection
+import io.realm.Realm
 import io.realm.RealmRecyclerViewAdapter
 
 internal class ListNoteAdapter(data: OrderedRealmCollection<Note>)
@@ -45,6 +46,19 @@ internal class ListNoteAdapter(data: OrderedRealmCollection<Note>)
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.mListener = listener
+    }
+
+    fun deleteItem(id: Long) {
+        Realm.getDefaultInstance().use { realm ->
+            realm.executeTransaction {
+                realm.where(Note::class.java)
+                        .equalTo("id", id)
+                        .findFirst()
+                        ?.deleteFromRealm()
+
+                notifyDataSetChanged()
+            }
+        }
     }
 
     internal inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

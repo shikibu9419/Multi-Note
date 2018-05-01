@@ -10,12 +10,15 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.realm.OrderedRealmCollection
 import io.realm.Realm
 
 class ListNoteFragment : Fragment() {
 
     private lateinit var mRealm: Realm
+    private lateinit var mAdapter: ListNoteAdapter
     private lateinit var mListener: ListNoteFragmentListener
+    private lateinit var result: OrderedRealmCollection<Note>
 
     interface ListNoteFragmentListener {
         fun onListItemClickListener(id: Long)
@@ -32,6 +35,7 @@ class ListNoteFragment : Fragment() {
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             // TODO: Implement delete function
+            mAdapter.deleteItem(viewHolder.itemId)
         }
 
         override fun isLongPressDragEnabled(): Boolean {
@@ -41,8 +45,10 @@ class ListNoteFragment : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        mRealm = Realm.getDefaultInstance()
         mListener = activity as ListNoteFragmentListener
+        mRealm = Realm.getDefaultInstance()
+        result = mRealm.where(Note::class.java).findAll()
+        mAdapter = ListNoteAdapter(result)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -62,11 +68,9 @@ class ListNoteFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         val recyclerView = view?.findViewById<View>(R.id.list_view_note) as RecyclerView
-        val resultData = mRealm.where(Note::class.java).findAll()
-        val adapter = ListNoteAdapter(resultData)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = adapter
+        recyclerView.adapter = mAdapter
         recyclerView.setHasFixedSize(true)
         recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
@@ -74,19 +78,10 @@ class ListNoteFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(touchHelperCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
-        adapter.setOnItemClickListener(object : ListNoteAdapter.OnItemClickListener {
+        mAdapter.setOnItemClickListener(object : ListNoteAdapter.OnItemClickListener {
             override fun onClick(view: View, id: Long) {
                 mListener.onListItemClickListener(id)
             }
         })
     }
-
-//    private fun deleteItem(id: Long) {
-//        synchronized(lock = Object()) {
-//            val item = resultData.where().equalTo("id", id).findFirst()
-//            mRealm.executeTransaction {
-//                item?.deleteFromRealm()
-//            }
-//        }
-//    }
 }

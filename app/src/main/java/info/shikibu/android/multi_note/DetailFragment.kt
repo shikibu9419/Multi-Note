@@ -27,7 +27,7 @@ class DetailFragment: Fragment() {
                 .findFirst()
 
         note?.let {
-            detail_detail.text = note.detail
+            detail_text.text = note.detail
         }
     }
 

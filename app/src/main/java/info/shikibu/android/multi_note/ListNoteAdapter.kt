@@ -31,12 +31,13 @@ internal class ListNoteAdapter(data: OrderedRealmCollection<Note>)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
-        item?.let { note ->
-            holder.data = note
-            holder.title.text = note.title
-            holder.detail.text = note.detail
-            holder.itemRow.setOnClickListener { mListener.onClick(it, note.id) }
+        holder.apply {
+            getItem(position)?.let { note ->
+                data = note
+                title.text = note.title
+                detail.text = note.detail
+                itemRow.setOnClickListener { mListener.onClick(it, note.id) }
+            }
         }
     }
 
@@ -69,8 +70,8 @@ internal class ListNoteAdapter(data: OrderedRealmCollection<Note>)
 
         init {
             itemRow = view.findViewById(R.id.item_row)
-            title = view.findViewById(R.id.note_title)
-            detail = view.findViewById(R.id.note_detail)
+            title = view.findViewById(R.id.item_title)
+            detail = view.findViewById(R.id.item_detail)
         }
     }
 }

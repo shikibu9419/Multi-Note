@@ -6,14 +6,14 @@
     android:padding="12dp">
 
     <EditText
-        android:id="@+id/form_note_title"
+        android:id="@+id/form_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:hint="@string/note_title_title"/>
 
     <EditText
-        android:id="@+id/form_note_detail"
+        android:id="@+id/form_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/note_detail_title"

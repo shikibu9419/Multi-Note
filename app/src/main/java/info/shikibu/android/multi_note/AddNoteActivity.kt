@@ -25,8 +25,8 @@ class AddNoteActivity : AppCompatActivity() {
                 note.id = realm.where(Note::class.java).max("id")!!.toLong() + 1
             }
 
-            note.title  = form_note_title.text.toString()
-            note.detail = form_note_detail.text.toString()
+            note.title  = form_title.text.toString()
+            note.detail = form_detail.text.toString()
 
             realm.executeTransaction {
                 it.copyToRealmOrUpdate(note)

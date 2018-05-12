@@ -17,4 +17,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/detail_title"/>
 
+    <TextView
+        android:id="@+id/start_date_title"
+        android:text="@string/note_start_date_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detail_text"/>
+
+    <TextView
+        android:id="@+id/start_date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/start_date_title"/>
+
 </RelativeLayout>

@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import io.realm.Realm
 import kotlinx.android.synthetic.main.fragment_detail.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DetailFragment: Fragment() {
 
@@ -22,13 +24,15 @@ class DetailFragment: Fragment() {
         mRealm = Realm.getDefaultInstance()
 
         val noteId = arguments.getLong("NOTE_ID")
-        val note = mRealm.where(Note::class.java)
+        val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
+
+        mRealm.where(Note::class.java)
                 .equalTo("id", noteId)
                 .findFirst()
-
-        note?.let {
-            detail_text.text = note.detail
-        }
+                ?.let { note ->
+                    detail_text.text = note.detail
+                    start_date_text.text = sdf.format(note.startDate)
+                }
     }
 
     override fun onDestroy() {

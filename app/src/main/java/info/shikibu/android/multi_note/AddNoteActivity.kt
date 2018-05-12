@@ -1,41 +1,53 @@
 package info.shikibu.android.multi_note
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import android.widget.DatePicker
 import io.realm.Realm
 import kotlinx.android.synthetic.main.form_note.*
+import java.text.SimpleDateFormat
+import java.util.*
 
-class AddNoteActivity : AppCompatActivity() {
+class AddNoteActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_note)
 
+        form_start_date.text = String.format(Locale.JAPAN, "%d", System.currentTimeMillis())
+
+        form_start_date.setOnClickListener {
+            DatePick().show(supportFragmentManager, "DatePick")
+        }
+
         form_save_button.setOnClickListener {
             saveAddData()
-            finish()
         }
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, day: Int) {
+        form_start_date.text = String.format(Locale.JAPAN, "%d/%d/%d", year, month + 1, day)
     }
 
     private fun saveAddData() {
         Realm.getDefaultInstance().use { realm ->
-            val note = Note()
-            if(!realm.isEmpty) {
-                note.id = realm.where(Note::class.java).max("id")!!.toLong() + 1
-            }
+            Note().apply {
+                val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
 
-            note.title  = form_title.text.toString()
-            note.detail = form_detail.text.toString()
+                if (!realm.isEmpty) {
+                    id = realm.where(Note::class.java).max("id")!!.toLong() + 1
+                }
 
-            realm.executeTransaction {
-                it.copyToRealmOrUpdate(note)
-            }
+                title = form_title.text.toString()
+                detail = form_detail.text.toString()
+                startDate = sdf.parse(form_start_date.text.toString())
 
-            realm.where(Note::class.java).findAll().forEach {
-                Log.d("REALM", "${it.id}, ${it.detail}")
+                realm.executeTransaction {
+                    it.copyToRealmOrUpdate(this)
+                }
             }
         }
-
+        finish()
     }
 }

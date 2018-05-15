@@ -2,7 +2,8 @@
     <string name="app_name">Multi Note</string>
     <string name="action_settings">Settings</string>
 
-    <string name="note_title_title">タイトル</string>
-    <string name="note_detail_title">詳細</string>
-    <string name="note_start_date_title">開始日</string>
+    <string name="title_note_title">タイトル</string>
+    <string name="title_note_detail">詳細</string>
+    <string name="title_note_start_date">開始日</string>
+    <string name="title_note_finish_date">終了日</string>
 </resources>

@@ -10,13 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:hint="@string/note_title_title"/>
+        android:hint="@string/title_note_title"/>
 
     <EditText
         android:id="@+id/form_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/note_detail_title"
+        android:hint="@string/title_note_detail"
         android:inputType="textMultiLine"
         android:lines="10"/>
 
@@ -24,13 +24,23 @@
         android:id="@+id/title_start_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/note_start_date_title"/>
+        android:text="@string/title_note_start_date"/>
 
     <TextView
         android:id="@+id/form_start_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:id="@+id/title_finish_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_note_finish_date"/>
+
+    <TextView
+        android:id="@+id/form_finish_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <Button
         android:id="@+id/form_save_button"
         android:text="保存"

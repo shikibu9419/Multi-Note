@@ -16,8 +16,13 @@ class AddNoteActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         setContentView(R.layout.activity_add_note)
 
         form_start_date.text = String.format(Locale.JAPAN, "%d", System.currentTimeMillis())
+        form_finish_date.text = String.format(Locale.JAPAN, "%d", System.currentTimeMillis())
 
         form_start_date.setOnClickListener {
+            DatePick().show(supportFragmentManager, "DatePick")
+        }
+
+        form_finish_date.setOnClickListener {
             DatePick().show(supportFragmentManager, "DatePick")
         }
 
@@ -27,7 +32,9 @@ class AddNoteActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, day: Int) {
+        // Todo: Fix
         form_start_date.text = String.format(Locale.JAPAN, "%d/%d/%d", year, month + 1, day)
+        form_finish_date.text = String.format(Locale.JAPAN, "%d/%d/%d", year, month + 1, day)
     }
 
     private fun saveAddData() {
@@ -41,7 +48,10 @@ class AddNoteActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
                 title = form_title.text.toString()
                 detail = form_detail.text.toString()
+
+                // Todo: String (form) -> Date
                 startDate = sdf.parse(form_start_date.text.toString())
+                finishDate = sdf.parse(form_finish_date.text.toString())
 
                 realm.executeTransaction {
                     it.copyToRealmOrUpdate(this)

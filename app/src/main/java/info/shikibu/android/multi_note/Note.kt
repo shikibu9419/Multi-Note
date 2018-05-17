@@ -11,6 +11,7 @@ open class Note(
         var id: Long = 0,
         var title: String = "",
         var detail: String = "",
+        var isTodo: Boolean = false,
         var startDate: Date? = null,
         var finishDate: Date? = null,
         var isDone: Boolean? = null

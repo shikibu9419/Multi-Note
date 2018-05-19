@@ -15,4 +15,7 @@ open class Note(
         var startDate: Date? = null,
         var finishDate: Date? = null,
         var isDone: Boolean? = null
-): RealmObject() {}
+): RealmObject() {
+        lateinit var createdAt: Date
+        lateinit var updatedAt: Date
+}

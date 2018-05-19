@@ -17,12 +17,12 @@ class AddNoteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_note)
 
         // Date init
-        val nowDate = Calendar.getInstance().time
-        val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
-        note.startDate = nowDate
-        note.finishDate = nowDate
-        form_start_date.text = sdf.format(nowDate)
-        form_finish_date.text = sdf.format(nowDate)
+        Calendar.getInstance().time.let { now ->
+            note.startDate = now
+            note.finishDate = now
+            form_start_date.text = SDF.format(now)
+            form_finish_date.text = SDF.format(now)
+        }
 
         // setOnClickListener
         form_start_date.setOnClickListener {
@@ -41,14 +41,13 @@ class AddNoteActivity : AppCompatActivity() {
         val nowYear = c.get(Calendar.YEAR)
         val nowMonth = c.get(Calendar.MONTH)
         val nowDay = c.get(Calendar.DAY_OF_MONTH)
-        val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
 
         DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, month, day ->
             if (columnName == "startDate") {
-                note.startDate = sdf.parse("$year/${month + 1}/$day")
+                note.startDate = SDF.parse("$year/${month + 1}/$day")
                 form_start_date.text = String.format(Locale.JAPAN, "%d/%d/%d", year, month + 1, day)
             } else {
-                note.finishDate = sdf.parse("$year/${month + 1}/$day")
+                note.finishDate = SDF.parse("$year/${month + 1}/$day")
                 form_finish_date.text = String.format(Locale.JAPAN, "%d/%d/%d", year, month + 1, day)
             }
         }, nowYear, nowMonth, nowDay).show()
@@ -62,6 +61,8 @@ class AddNoteActivity : AppCompatActivity() {
                 }
                 title = form_title.text.toString()
                 detail = form_detail.text.toString()
+                createdAt = Calendar.getInstance().time
+                updatedAt = Calendar.getInstance().time
             }
 
             realm.executeTransaction {
@@ -69,5 +70,9 @@ class AddNoteActivity : AppCompatActivity() {
             }
         }
         finish()
+    }
+
+    companion object {
+        val SDF = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
     }
 }

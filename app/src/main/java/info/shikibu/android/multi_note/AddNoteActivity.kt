@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import io.realm.Realm
 import kotlinx.android.synthetic.main.form_note.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AddNoteActivity : AppCompatActivity() {
@@ -15,17 +16,21 @@ class AddNoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_note)
 
-        form_start_date.text = String.format(Locale.JAPAN, "%d", System.currentTimeMillis())
-        form_finish_date.text = String.format(Locale.JAPAN, "%d", System.currentTimeMillis())
+        // Date init
+        val nowDate = Calendar.getInstance().time
+        val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
+        note.startDate = nowDate
+        note.finishDate = nowDate
+        form_start_date.text = sdf.format(nowDate)
+        form_finish_date.text = sdf.format(nowDate)
 
+        // setOnClickListener
         form_start_date.setOnClickListener {
             onDateFormClickListener("startDate")
         }
-
         form_finish_date.setOnClickListener {
             onDateFormClickListener("finishDate")
         }
-
         form_save_button.setOnClickListener {
             saveAddData()
         }
@@ -33,19 +38,20 @@ class AddNoteActivity : AppCompatActivity() {
 
     private fun onDateFormClickListener(columnName: String) {
         val c = Calendar.getInstance()
-        val cYear = c.get(Calendar.YEAR)
-        val cMonth = c.get(Calendar.MONTH)
-        val cDay = c.get(Calendar.DAY_OF_MONTH)
+        val nowYear = c.get(Calendar.YEAR)
+        val nowMonth = c.get(Calendar.MONTH)
+        val nowDay = c.get(Calendar.DAY_OF_MONTH)
+        val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
 
         DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, month, day ->
             if (columnName == "startDate") {
-                note.startDate = Date(year, month + 1, day)
+                note.startDate = sdf.parse("$year/${month + 1}/$day")
                 form_start_date.text = String.format(Locale.JAPAN, "%d/%d/%d", year, month + 1, day)
             } else {
-                note.finishDate = Date(year, month + 1, day)
+                note.finishDate = sdf.parse("$year/${month + 1}/$day")
                 form_finish_date.text = String.format(Locale.JAPAN, "%d/%d/%d", year, month + 1, day)
             }
-        }, cYear, cMonth, cDay).show()
+        }, nowYear, nowMonth, nowDay).show()
     }
 
     private fun saveAddData() {

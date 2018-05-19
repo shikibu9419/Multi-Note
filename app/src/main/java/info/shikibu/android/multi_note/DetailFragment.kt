@@ -31,14 +31,8 @@ class DetailFragment: Fragment() {
                 .findFirst()
                 ?.let { note ->
                     detail_text.text = note.detail
-
-                    // Todo: Refactoring
-                    if (start_date_text.text.isNotBlank()) {
-                        start_date_text.text = sdf.format(note.startDate)
-                    }
-                    if (finish_date_text.text.isNotBlank()) {
-                        finish_date_text.text = sdf.format(note.finishDate)
-                    }
+                    start_date_text.text = sdf.format(note.startDate)
+                    finish_date_text.text = sdf.format(note.finishDate)
                 }
     }
 

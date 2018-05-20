@@ -24,15 +24,17 @@ class DetailFragment: Fragment() {
         mRealm = Realm.getDefaultInstance()
 
         val noteId = arguments.getLong("NOTE_ID")
-        val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
 
         mRealm.where(Note::class.java)
                 .equalTo("id", noteId)
                 .findFirst()
-                ?.let { note ->
-                    detail_text.text = note.detail
-                    start_date_text.text = sdf.format(note.startDate)
-                    finish_date_text.text = sdf.format(note.finishDate)
+                ?.apply {
+                    // toolbar.title = title
+                    detail_text.text = detail
+                    start_date_text.text = SDF.format(startDate)
+                    finish_date_text.text = SDF.format(finishDate)
+                    created_at_text.text = SDF.format(createdAt)
+                    updated_at_text.text = SDF.format(updatedAt)
                 }
     }
 
@@ -48,5 +50,9 @@ class DetailFragment: Fragment() {
         args.putLong("NOTE_ID", id)
         fragment.arguments = args
         return fragment
+    }
+
+    companion object {
+        val SDF = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
     }
 }

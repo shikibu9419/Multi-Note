@@ -6,4 +6,6 @@
     <string name="title_note_detail">詳細</string>
     <string name="title_note_start_date">開始日</string>
     <string name="title_note_finish_date">終了日</string>
+    <string name="title_note_created_at">作成日</string>
+    <string name="title_note_updated_at">最終更新日</string>
 </resources>

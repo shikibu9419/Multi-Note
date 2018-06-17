@@ -1,11 +1,7 @@
 *.iml
 .gradle
 local.properties
-.idea/codeStyles/*
-.idea/workspace.xml
-.idea/libraries
-.idea/caches
-.idea/misc
+.idea
 .DS_Store
 build
 captures

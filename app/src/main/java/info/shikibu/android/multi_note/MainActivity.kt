@@ -1,22 +1,29 @@
 package info.shikibu.android.multi_note
 
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import info.shikibu.android.multi_note.databinding.ActivityMainBinding
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
         ListNoteFragment.ListNoteFragmentListener {
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         Realm.init(this)
 
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.viewModel = MainActivityViewModel()
+
+        // setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
         supportFragmentManager.beginTransaction()

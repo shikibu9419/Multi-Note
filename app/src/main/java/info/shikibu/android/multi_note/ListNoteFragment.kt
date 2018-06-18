@@ -10,15 +10,18 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.realm.OrderedRealmCollection
+import info.shikibu.android.multi_note.databinding.FragmentListNoteBinding
 import io.realm.Realm
+import io.realm.RealmResults
 
 class ListNoteFragment : Fragment() {
+
+    private lateinit var binding: FragmentListNoteBinding
 
     private lateinit var mRealm: Realm
     private lateinit var mAdapter: ListNoteAdapter
     private lateinit var mListener: ListNoteFragmentListener
-    private lateinit var result: OrderedRealmCollection<Note>
+    private lateinit var result: RealmResults<Note>
 
     interface ListNoteFragmentListener {
         fun onListItemClickListener(id: Long)
@@ -53,7 +56,8 @@ class ListNoteFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_list_note, container, false)
+        binding = FragmentListNoteBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onResume() {
